@@ -19,3 +19,7 @@ class CustomTokenObtainPairSerializer(BaseTokenObtainPairSerializer):
         
         # Return the token data
         return data
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()

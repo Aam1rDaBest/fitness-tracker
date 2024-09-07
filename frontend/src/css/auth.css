@@ -1,10 +1,14 @@
 body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .form-container {
-  width: 300px;
-  margin: 0 auto;
+  max-width: 90%;
+  width: 400px;
+  margin: 20px auto;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -16,7 +20,7 @@ h2 {
 }
 
 form div {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 label {
@@ -25,8 +29,8 @@ label {
 }
 
 input {
-  width: 100%;
-  padding: 8px;
+  width: 95%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -38,6 +42,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
 }
 
 button:hover {
@@ -46,4 +51,29 @@ button:hover {
 
 p {
   color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 0.25em;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+  .form-container {
+    width: 100%;
+    padding: 10px;
+    box-shadow: none;
+  }
+
+  button {
+    padding: 12px 0;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .form-container {
+    width: 80%;
+  }
 }

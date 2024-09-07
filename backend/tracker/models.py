@@ -29,17 +29,17 @@ class User(Document):
     REQUIRED_FIELDS = ['username']
     
     def clean(self):
-        # Email validation
-        email_validator = EmailValidator(message="Invalid email format")
-        email_validator(self.email)
-        if User.objects(email=self.email).count() > 0:
-            raise ValidationError("Email is already in use")
-        
         # Username validation
         if len(self.username) < 5:
             raise ValidationError("Username must be at least 5 characters long")
         if User.objects(username=self.username).count() > 0:
             raise ValidationError("Username is already taken")
+        
+        # Email validation
+        email_validator = EmailValidator(message="Invalid email format")
+        email_validator(self.email)
+        if User.objects(email=self.email).count() > 0:
+            raise ValidationError("Email is already in use")
 
     def clean_password(self, password):
         # Password validation

@@ -13,9 +13,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/tracker/login/', { username, password });
-            console.log(response.data)
-            localStorage.setItem('token', response.data.access); // Save the token in local storage
-            navigate('/protected'); // Redirect to a protected page
+            localStorage.setItem('token', response.data.access);
+            navigate('/protected');
         } catch (err) {
             setError('Invalid credentials');
         }
@@ -33,6 +32,7 @@ const Login = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        placeholder="Must include at least 5 characters"
                     />
                 </div>
                 <div>
@@ -42,6 +42,7 @@ const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        placeholder="Must include at least 5 characters and be valid"
                     />
                 </div>
                 <button type="submit">Login</button>
