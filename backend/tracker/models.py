@@ -1,8 +1,13 @@
-from mongoengine import Document, EmailField, StringField, BooleanField
+from django.utils import timezone
+from datetime import timedelta
+from django.utils.timezone import make_aware
+from mongoengine import Document, EmailField, StringField, BooleanField, DateTimeField
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.core.validators import EmailValidator, RegexValidator
 import re
+import base64
 
 class CustomUserManager:
     def create_user(self, email, username, password=None, **extra_fields):
@@ -62,3 +67,42 @@ class User(Document):
 
     def __str__(self):
         return self.email
+
+class AccessTokenBlacklist(Document):  
+    token = StringField(required=True) 
+    created_at = DateTimeField(default=timezone.now)
+    is_active = BooleanField(default=True)
+
+    meta = {'collection': 'access_token_blacklist'}
+
+    def encode_token(self, raw_token):
+        """Encode the token string."""
+        return base64.b64encode(raw_token.encode()).decode()
+
+    def decode_token(self, encoded_token):
+        """Decode the token string."""
+        return base64.b64decode(encoded_token.encode()).decode()
+
+    def save(self, *args, **kwargs):
+        """Override save to handle token encoding."""
+        if self.token:
+            self.token = self.encode_token(self.token)
+        super().save(*args, **kwargs)
+        
+    @staticmethod
+    def deactivate_expired_tokens():
+        """Deactivate tokens that have expired."""
+        now = timezone.now()
+        expiration_time = now - timedelta(minutes=15)
+        AccessTokenBlacklist.objects(created_at__lt=expiration_time, is_active=True).update(is_active=False)
+
+    @staticmethod
+    def delete_inactive_tokens():
+        """Delete tokens that are inactive."""
+        AccessTokenBlacklist.objects(is_active=False).delete()
+
+    def cleanup_expired_and_inactive_tokens():
+        """Run cleanup for expired and inactive tokens."""
+        AccessTokenBlacklist.deactivate_expired_tokens()
+        AccessTokenBlacklist.delete_inactive_tokens()
+    

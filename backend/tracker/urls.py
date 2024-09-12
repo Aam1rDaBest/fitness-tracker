@@ -15,6 +15,6 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('protected/', views.protected_view, name='protected_view'),
     path('password-reset/', views.request_password_reset, name='password_reset_request'),
-    path('password-reset/verify/', views.verify_reset_token, name='password_reset_verify'),
+    path('password-reset/verify/', views.verify_reset_tokens, name='password_reset_verify'),
     path('password-reset/confirm/', views.confirm_password_reset, name='password_reset_confirm'),
 ]

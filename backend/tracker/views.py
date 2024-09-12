@@ -12,7 +12,7 @@ from .models import User
 from rest_framework_simplejwt_mongoengine.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer, PasswordResetRequestSerializer
 from .authentication import MongoAuthBackend
-from .utils import generate_reset_token, validate_reset_token, get_user_from_token
+from .utils import generate_reset_token, validate_reset_token, get_user_from_token, blacklist_access_token
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -101,8 +101,9 @@ def request_password_reset(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-def verify_reset_token(request):
+def verify_reset_tokens(request):
     token = request.query_params.get('token')
+    print(f"Token received: {token}")
     if validate_reset_token(token):
         return Response({'message': 'Token is valid.'}, status=status.HTTP_200_OK)
     return Response({'error': 'Invalid or expired token.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -113,21 +114,21 @@ def confirm_password_reset(request):
     new_password = request.data.get('password')
     errors = {}
 
-    # Validate the token first
-    if validate_reset_token(token):
-        user = get_user_from_token(token)
-        if user:
-            # Validate the new password
-            try:
-                user.clean_password(new_password)
-            except ValidationError as e:
-                errors['password'] = str(e).strip("[]").replace("'", "")
+    user = get_user_from_token(token)
+    if user:
+        # Validate the new password
+        try:
+            user.clean_password(new_password)
+        except ValidationError as e:
+            errors['password'] = str(e).strip("[]").replace("'", "")
 
-            if errors:
-                return Response({'status': 'error', 'errors': errors}, status=status.HTTP_400_BAD_REQUEST)
+        if errors:
+            return Response({'status': 'error', 'errors': errors}, status=status.HTTP_400_BAD_REQUEST)
 
-            user.save()
-            return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
+        user.set_password(new_password)
+        user.save(validate=False)
+        blacklist_access_token(token)
+        return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
     
     # If the token is invalid or expired, or if there's any other issue
     return Response({'error': 'Invalid or expired token.'}, status=status.HTTP_400_BAD_REQUEST)
