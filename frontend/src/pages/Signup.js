@@ -1,6 +1,8 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import lottie from "lottie-web";
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import arrowAnimation from '../assets/Arrow right_custom_icon.json';
 import '../css/auth.css';
 
 const Signup = () => {
@@ -8,7 +10,22 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const animationContainer = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const animation = lottie.loadAnimation({
+            container: animationContainer.current, // The container that will hold the animation
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: arrowAnimation, // The animation JSON data
+        });
+
+        return () => {
+            animation.destroy(); // Cleanup on unmount
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -75,7 +92,10 @@ const Signup = () => {
                     />
                     {errors.password && <p className="error-message">{errors.password}</p>}
                 </div>
-                <button type="submit">Sign Up</button>
+                <button type="submit">
+                    <span>Sign Up</span>
+                    <div ref={animationContainer} className="lottie-icon" />
+                </button>
             </form>
             <p>Already have an account? <a href="/login">Log in</a></p>
         </div>

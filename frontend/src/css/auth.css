@@ -36,13 +36,35 @@ input {
 }
 
 button {
-  padding: 10px 15px;
+  padding: 8x 0px;
   background-color: #28a745;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  min-height: 60px;
+  max-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.lottie-icon {
+  width: 10%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  margin-left: 10px;
 }
 
 button:hover {
@@ -53,10 +75,20 @@ p {
   color: red;
 }
 
+.success-message {
+  color: #28a745;
+}
+
 .error-message {
   color: red;
   font-size: 0.8em;
   margin-top: 0.25em;
+}
+
+.sub-header {
+  color: gray;
+  font-size: 0.9em;
+
 }
 
 /* Media Queries for Responsiveness */
