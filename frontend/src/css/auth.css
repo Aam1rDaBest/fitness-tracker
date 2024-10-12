@@ -1,22 +1,36 @@
+html,
 body {
-  font-family: Arial, sans-serif;
+  height: 90%;
+  width: 100%;
   margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('../assets/gym.png') no-repeat center center fixed;
+  background-size: cover;
+  background-position: center;
   padding: 0;
   box-sizing: border-box;
+  position: relative;
 }
 
 .form-container {
-  max-width: 90%;
-  width: 400px;
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  max-width: 400px;
+  width: 100%;
   margin: 20px auto;
   padding: 20px;
+  position: relative;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
+
 
 h2 {
   margin-bottom: 20px;
+  font-family: Montserrat;
 }
 
 form div {
@@ -26,6 +40,7 @@ form div {
 label {
   display: block;
   margin-bottom: 5px;
+  font-family: Montserrat;
 }
 
 input {
@@ -33,18 +48,19 @@ input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 button {
-  padding: 8x 0px;
-  background-color: #28a745;
+  padding: 10px;
+  background: linear-gradient(135deg, #28a745, #0f5d20);
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
-  min-height: 60px;
-  max-height: 70px;
+  width: 99%;
+  min-height: 50px;
+  max-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,11 +84,11 @@ button span {
 }
 
 button:hover {
-  background-color: #218838;
+  background: linear-gradient(360deg, #1e6f2f, #2eb64e);
 }
 
 p {
-  color: red;
+  color: black;
 }
 
 .success-message {
@@ -93,6 +109,7 @@ p {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 600px) {
+
   .form-container {
     width: 100%;
     padding: 10px;
@@ -105,6 +122,7 @@ p {
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
+
   .form-container {
     width: 80%;
   }
