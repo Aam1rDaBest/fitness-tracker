@@ -37,29 +37,43 @@ const PasswordResetRequest = () => {
     };
 
     return (
-        <div className="form-container">
-            <h2>Reset Password</h2>
-            <h3 className='sub-header'>Get Username + Password Reset Link</h3>
-            {message && <p className="success-message">{message}</p>}
-            {error && <p className="error-message">{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="Enter your email address"
-                    />
+        <div className="page">
+            <header>
+                <nav class="logo"></nav>
+                <nav class="navigation">
+                    <a href="">Home</a>
+                    <a href="">Login</a>
+                    <a href="">Signup</a>
+                    <a href="">Re-roo</a>
+                </nav>
+            </header>
+            <div className="login-background">
+                <div className="form-container">
+                    <h2>Reset Password</h2>
+                    <h3 className='sub-header'>Get Username + Password Reset Link</h3>
+                    {message && <p className="success-message">{message}</p>}
+                    {error && <p className="error-message">{error}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <div class="input-box">
+                            <label>Email:</label>
+                            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder="Enter your email address"
+                            />
+                        </div>
+                        <button type="submit">
+                            <span>Request Reset Link</span>
+                            <div ref={animationContainer} className="lottie-icon" />
+                        </button>
+                    </form>
+                    <p className="text">Already have an account? <a href="/login">Log in</a></p>
+                    <p className="text">Don't have an account? <a href="/signup">Sign up</a></p>
                 </div>
-                <button type="submit">
-                    <span>Request Reset Link</span>
-                    <div ref={animationContainer} className="lottie-icon" />
-                </button>
-            </form>
-            <p>Already have an account? <a href="/login">Log in</a></p>
-            <p>Don't have an account? <a href="/signup">Sign up</a></p>
+            </div>
         </div>
     );
 };

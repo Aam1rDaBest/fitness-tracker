@@ -9,6 +9,8 @@ const Signup = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [toggleAnimation, setToggleAnimation] = useState(false);
     const [errors, setErrors] = useState({});
     const animationContainer = useRef(null);
     const navigate = useNavigate();
@@ -26,6 +28,12 @@ const Signup = () => {
             animation.destroy(); // Cleanup on unmount
         };
     }, []);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+        setToggleAnimation(true);
+        setTimeout(() => setToggleAnimation(false), 300);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,49 +63,71 @@ const Signup = () => {
     };
 
     return (
-        <div className="form-container">
-            <h2>Sign Up</h2>
-            {errors.general && <p className="error-message">{errors.general}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        placeholder="Must include at least 5 characters"
-                    />
-                    {errors.username && <p className="error-message">{errors.username}</p>}
+        <div className="page">
+            <header>
+                <nav class="logo"></nav>
+                <nav class="navigation">
+                    <a href="">Home</a>
+                    <a href="">Login</a>
+                    <a href="">Signup</a>
+                    <a href="">Re-roo</a>
+                </nav>
+            </header>
+            <div className="login-background">
+                <div className="form-container">
+                    <h2>Sign Up</h2>
+                    {errors.general && <p className="error-message">{errors.general}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <div class="input-box">
+                            <label>Username:</label>
+                            <span class="icon"><ion-icon name="person"></ion-icon></span>
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                                placeholder="Must include at least 5 characters"
+                            />
+                            {errors.username && <p className="error-message">{errors.username}</p>}
+                        </div>
+                        <div class="input-box">
+                            <label>Email:</label>
+                            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder="Must be a valid email address"
+                            />
+                            {errors.email && <p className="error-message">{errors.email}</p>}
+                        </div>
+                        <div class="input-box">
+                            <label>Password:</label>
+                            <span
+                                className={`icon ${toggleAnimation ? "lock-toggle" : ""}`}
+                                onClick={handleTogglePassword}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <ion-icon name={showPassword ? "lock-open" : "lock-closed"}></ion-icon>
+                            </span>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                placeholder="Must include at least 5 characters and be valid"
+                            />
+                            {errors.password && <p className="error-message">{errors.password}</p>}
+                        </div>
+                        <button type="submit">
+                            <span>Sign Up</span>
+                            <div ref={animationContainer} className="lottie-icon" />
+                        </button>
+                    </form>
+                    <p className="text">Already have an account? <a href="/login">Log in</a></p>
                 </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="Must be a valid email address"
-                    />
-                    {errors.email && <p className="error-message">{errors.email}</p>}
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="Must include at least 5 characters and be valid"
-                    />
-                    {errors.password && <p className="error-message">{errors.password}</p>}
-                </div>
-                <button type="submit">
-                    <span>Sign Up</span>
-                    <div ref={animationContainer} className="lottie-icon" />
-                </button>
-            </form>
-            <p>Already have an account? <a href="/login">Log in</a></p>
+            </div>
         </div>
     );
 };
